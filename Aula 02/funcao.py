@@ -1,11 +1,11 @@
 def analise_positivo(numero):
-    if(numero>-1):
+    if numero>-1:
         return "positivo"
     else:
         return "negativo"
     
 def par_impar(numero):
-    if(numero % 2 == 0):
+    if numero % 2 == 0:
         return "par"
     else:
         return "impar"
