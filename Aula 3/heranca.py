@@ -17,9 +17,6 @@ class CarroEletrico (Carro):
     def __init__(self , carro):
         super().__init__(carro.marca, carro.cor)
         self.bateria = 100
-
-    def carro_jenrico(self):
-        self.__init__(Carro("qualquer", "Preto"))
     
     def acelerar(self):
         if self.bateria >= 10:

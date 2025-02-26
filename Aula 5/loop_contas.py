@@ -1,4 +1,5 @@
 from datetime import datetime
+import random
 
 class ContaBancaria:
     
@@ -38,11 +39,11 @@ class ContaBancaria:
 
 
 
-conta = ContaBancaria(100)
+contas = []
 
-conta.ver_saldo()
-conta.depositar(100, "salario")
-conta.ver_saldo()
-conta.sacar(200, "saque emergencial")
-conta.ver_saldo()
-conta.ver_extrato()
+for x in range(10):
+    contas.append(ContaBancaria(random.randint(1, 10)))
+
+for conta in contas:
+    conta.sacar(random.randint(50, 100), "saque emergencial")
+    conta.ver_extrato()
