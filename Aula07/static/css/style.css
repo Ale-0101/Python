@@ -1,0 +1,66 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgba(226, 222, 222, 0.768);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: antiquewhite;
+    height: 500px;
+}
+
+.olaAmigo {
+    background-color: rgb(75, 75, 75);
+    height: 200px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    font-size: x-large;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.5s ease;
+
+}
+
+.olaAmigo:hover {
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
+    transform: scale(1.1);
+    text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.5);
+}
+
+.olaAmigo h1 {
+    padding-bottom: 20px;
+}
+
+.click {
+    border-radius: 9px;
+    padding: 5px 30px;
+    background-color: black;
+    color: wheat;
+    transition: all 0.5s ease;
+}
+
+.click:hover {
+    box-shadow: 0px 0px 50px rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
+}
+
+.mamaou {
+    position: absolute ;
+    color: black;
+    background-color: aquamarine;
+    /* background: linear-gradient(750deg, red, yellow, blue, purple); */
+    font-size: x-large;
+    z-index: 3;
+}
+
+.show {
+
+}
