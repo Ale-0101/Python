@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesas</title>
+</head>
+<body>
+    <h1>Mesas</h1>
+    <ul>
+        {% for mesa in mesas %}
+            <li>
+                <h2>{{ mesa.nome_mesa }}</h2>
+                <ul>
+                    {% for ficha in mesa.fichas %}
+                        <li>ID: {{ ficha.id }} - Nome: {{ ficha.nome }}</li>
+                    {% endfor %}
+                </ul>
+                <a href="{{ url_for('mesa', mesa_id=mesa.id) }}">
+                    <button>Ver Mesa</button>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
