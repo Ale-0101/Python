@@ -21,6 +21,7 @@ class Mesas(db.Model):
 
 class Fichas(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    mesa_id = db.Column(db.Integer)
     nome_personagem = db.Column(db.Text, nullable=False)
     classe_personagem = db.Column(db.Text, nullable=False)
     nivel_personagem = db.Column(db.Integer)
@@ -43,6 +44,7 @@ with app.app_context():
 
         ficha_romulo = Fichas(
         id=1,
+        mesa_id=1,
         nome_personagem="Romulo",
         classe_personagem="Guerreiro",
         nivel_personagem=1,
@@ -66,6 +68,7 @@ with app.app_context():
 
         ficha_alexandre = Fichas(
             id=2,
+            mesa_id=1,
             nome_personagem="Alexandre",
             classe_personagem="Mago",
             nivel_personagem=1,
@@ -94,44 +97,157 @@ with app.app_context():
 
 @app.route('/')
 def home():
+
     mesas = Mesas.query.all()
 
-    # Para cada mesa, converta as fichas de JSON para uma lista de dicionários
     for mesa in mesas:
-        mesa.fichas = json.loads(mesa.fichas)  # Converte a string JSON para lista de dicionários
+        mesa.fichas = json.loads(mesa.fichas)
     
     return render_template('index.html', mesas=mesas)
 
 
-@app.route('/mesa/<int:mesa_id>')
+@app.route('/mesa/<mesa_id>', methods=['GET' , 'POST'])
 def mesa(mesa_id):
-    # Recupera a mesa pelo ID
+
+    if request.method == 'POST':
+        new_mesa = Mesas(nome_mesa = request.form['nome_mesa'], fichas="{}")
+        db.session.add(new_mesa)
+        db.session.commit()
+        mesa_id = new_mesa.id
+
+
     mesa = Mesas.query.get_or_404(mesa_id)
 
     # Converte a string JSON em um objeto Python (lista de dicionários)
     try:
-        fichas = json.loads(mesa.fichas) if mesa.fichas else []
-        
+        fichas_ids = json.loads(mesa.fichas) if mesa.fichas else []
     except json.JSONDecodeError as e:
-        fichas = []
+        fichas_ids = []
         print(f"Erro ao decodificar o JSON da mesa: {e}")
-    
-    # Verificar se o JSON de ataques está sendo processado corretamente
+
+    # Buscar todas as fichas completas pelo ID
+    fichas = Fichas.query.filter(Fichas.id.in_([f['id'] for f in fichas_ids])).all()
+
+    # Converter ataques de JSON para lista de dicionários
     for ficha in fichas:
-        print(f"-----")
-        print(f"-----")
-        print(ficha)
-        print(f"-----")
-        print(f"-----")
-        print(f"-----")
         try:
-            ficha['ataques_personagem'] = json.loads(ficha['ataques_personagem']) if ficha.get('ataques_personagem') else []
-            
+            ficha.ataques_personagem = json.loads(ficha.ataques_personagem) if ficha.ataques_personagem else []
         except json.JSONDecodeError as e:
-            ficha['ataques_personagem'] = []
+            ficha.ataques_personagem = []
             print(f"Erro ao decodificar o JSON dos ataques: {e}")
 
-    # Passa os dados para o template
     return render_template('mesa.html', mesa=mesa, fichas=fichas)
+
+@app.route('/novaFicha/<int:mesa_id>')
+def novaFicha(mesa_id):
+    return render_template('novaFicha.html', mesa_id = mesa_id)
+
+@app.route('/novaMesa')
+def novaMesa():
+    return render_template('novaMesa.html')
+
+@app.route('/ficha/<ficha_id>', methods=['GET' , 'POST'])
+def ficha(ficha_id):
+
+    if request.method == 'POST':
+
+        ataques = []
+        for key in request.form:
+            if key.startswith("ataques[") and key.endswith("][arma]"):
+                index = key.split("[")[1].split("]")[0]  # Obtém o índice do ataque
+                
+                arma = request.form.get(f"ataques[{index}][arma]", "").strip()
+                bonus = request.form.get(f"ataques[{index}][bonos]", "0").strip()
+                dado = request.form.get(f"ataques[{index}][dado]", "0").strip()
+
+                # Converte os valores numéricos corretamente
+                ataques.append({
+                    "arma": arma,
+                    "bonos": int(bonus) if bonus.isdigit() else 0,
+                    "dado": int(dado) if dado.isdigit() else 0
+                })
+
+        # Converte para JSON formatado
+        ataques_json = json.dumps(ataques, ensure_ascii=False, indent=4)
+
+        if ficha_id != "new":
+
+            ficha = Fichas.query.get_or_404(ficha_id)
+
+            ficha.nome_personagem = request.form['nome_personagem']
+            ficha.classe_personagem = request.form['classe_personagem']
+            ficha.nivel_personagem = request.form['nivel_personagem']
+            ficha.força_personagem = request.form['força_personagem']
+            ficha.inteligencia_personagem = request.form['inteligencia_personagem']
+            ficha.constituicao_personagem = request.form['constituicao_personagem']
+            ficha.armadura_personagem = request.form['armadura_personagem']
+            ficha.ataques_personagem = ataques_json
+            
+            db.session.commit()
+
+            try:
+                ficha.ataques_personagem = json.loads(ficha.ataques_personagem) if ficha.ataques_personagem else []
+
+            except json.JSONDecodeError as e:
+                ficha.ataques_personagem = []
+                print(f"Erro ao decodificar o JSON dos ataques: {e}")
+
+            return render_template('ficha.html', ficha=ficha)
+                    
+        else:
+
+            new_ficha = Fichas(
+            mesa_id=request.form['mesa_id'],
+            nome_personagem=request.form['nome_personagem'],
+            classe_personagem=request.form['classe_personagem'],
+            nivel_personagem=request.form['nivel_personagem'],
+            força_personagem=request.form['força_personagem'],
+            inteligencia_personagem=request.form['inteligencia_personagem'],
+            constituicao_personagem=request.form['constituicao_personagem'],
+            armadura_personagem=request.form['armadura_personagem'],
+            ataques_personagem=ataques_json)
+            
+            mesa = Mesas.query.get_or_404(new_ficha.mesa_id)
+
+            db.session.add(new_ficha)
+            db.session.commit()
+            var = {"id": new_ficha.id, "nome": new_ficha.nome_personagem}
+            fichas_lista = json.loads(mesa.fichas)
+            print(f"{var}")
+            fichas_lista.append(var)
+            mesa.fichas = json.dumps(fichas_lista)
+
+            db.session.commit()
+
+            
+
+            try:
+                fichas_ids = json.loads(mesa.fichas) if mesa.fichas else []
+            except json.JSONDecodeError as e:
+                fichas_ids = []
+                print(f"Erro ao decodificar o JSON da mesa: {e}")
+
+            fichas = Fichas.query.filter(Fichas.id.in_([f['id'] for f in fichas_ids])).all()
+
+            for ficha in fichas:
+                try:
+                    ficha.ataques_personagem = json.loads(ficha.ataques_personagem) if ficha.ataques_personagem else []
+                except json.JSONDecodeError as e:
+                    ficha.ataques_personagem = []
+                    print(f"Erro ao decodificar o JSON dos ataques: {e}")
+
+            return render_template('mesa.html', mesa=mesa, fichas=fichas)
+            
+
+    ficha = Fichas.query.get_or_404(ficha_id)
+
+    try:
+        ficha.ataques_personagem = json.loads(ficha.ataques_personagem) if ficha.ataques_personagem else []
+
+    except json.JSONDecodeError as e:
+        ficha.ataques_personagem = []
+        print(f"Erro ao decodificar o JSON dos ataques: {e}")
+
+    return render_template('ficha.html', ficha=ficha)
 
 app.run(debug=True)

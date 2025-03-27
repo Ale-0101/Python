@@ -1,16 +1,23 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 
 app = Flask(__name__)
 
 @app.route('/')
+def home():
+    return redirect(url_for('name'))
 
-def hello():
-    return render_template('index.html', nome = 'visitante')
+@app.route('/name', methods=['GET', 'POST'])
+def name():
+    if request.method == 'POST':
+        nome = request.form.get('nome')
+        return redirect(url_for('index', nome=nome))
+    return render_template('name.html')
 
-@app.route('/aula07/<nome>')
+@app.route('/sucesso')
+def index():
+    nome = request.args.get('nome') 
+    return render_template('index.html', nome = nome)
 
-def mensagem(nome):
-    return f'boa noite {nome}!! espero que esteja tudo bem!'
 
 if __name__ == '__main__':
     app.run(debug=True)

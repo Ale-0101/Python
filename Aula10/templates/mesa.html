@@ -9,13 +9,19 @@
     <h1>{{ mesa.nome_mesa }}</h1>
 
     <h2>Fichas:</h2>
+
+    <a href="{{ url_for('novaFicha', mesa_id=mesa.id) }}">
+        <button>Criar nova ficha</button>
+    </a>
+
     <ul>
+
+
+        
         {% if fichas %}
             {% for ficha in fichas %}
                 <li>
                     <h3>{{ ficha.nome_personagem }}</h3>
-                    <strong>ID:</strong> {{ ficha.id }} <br>
-                    <strong>ID:</strong> {{ ficha.nome }} <br>
                     <strong>Classe:</strong> {{ ficha.classe_personagem }} <br>
                     <strong>Nível:</strong> {{ ficha.nivel_personagem }} <br>
                     <strong>Força:</strong> {{ ficha.força_personagem }} <br>
@@ -37,6 +43,9 @@
                         {% endif %}
                     </ul>
                 </li>
+                <a href="{{ url_for('ficha', ficha_id=ficha.id) }}">
+                    <button>Acessar</button>
+                </a>
             {% endfor %}
         {% else %}
             <p>Não há fichas associadas a esta mesa.</p>
