@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/css/stayle.css" rel="stylesheet" />
     <title>Editar: {{ ficha.nome_personagem }}</title>
 </head>
 <body>
+
+    <section class = "book">
 
     <h1>Editar Ficha: {{ ficha.nome_personagem }}</h1>
 
@@ -48,22 +51,22 @@
                         <label><strong>Dado:</strong></label>
                         <input type="number" name="ataques[{{ loop.index0 }}][dado]" value="{{ ataque.dado }}" required><br>
 
-                        <button type="button" onclick="removerAtaque(this)">Remover</button>
+                        <button class="botao botao_mesa" type="button" onclick="removerAtaque(this)">Remover</button>
                     </li>
                 {% endfor %}
             {% endif %}
         </ul>
 
-        <button type="button" onclick="adicionarAtaque()">Adicionar Ataque</button><br>
+        <button class="botao botao_mesa" type="button" onclick="adicionarAtaque()">Adicionar Ataque</button><br>
 
-        <button type="submit">Salvar</button>
+        <button class="botao botao_mesa" type="submit">Salvar</button>
     </form>
 
     <a href="{{ url_for('mesa', mesa_id=ficha.mesa_id) }}">
-        <button>Voltar</button>
+        <button class="botao botao_mesa" >Voltar</button>
     </a>
 
     <script src="../static/script.js"></script>
-
+    </section>
 </body>
 </html>

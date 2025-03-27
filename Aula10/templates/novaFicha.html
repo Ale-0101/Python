@@ -3,48 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/css/stayle.css" rel="stylesheet" />
     <title>Cadastrar Ficha</title>
 </head>
 <body>
 
-    <h1>Cadastrar Ficha:</h1>
+    <section class = "book">
 
-    <form action="{{ url_for('ficha', ficha_id='new') }}" method="POST">
-        <input type="hidden" name="mesa_id" value="{{ mesa_id }}">
+        <h1>Cadastrar Ficha:</h1>
 
-        <label><strong>Nome:</strong></label>
-        <input type="text" name="nome_personagem" required><br>
+        <form action="{{ url_for('ficha', ficha_id='new') }}" method="POST">
+            <input type="hidden" name="mesa_id" value="{{ mesa_id }}">
 
-        <label><strong>Classe:</strong></label>
-        <input type="text" name="classe_personagem" required><br>
+            <label><strong>Nome:</strong></label>
+            <input type="text" name="nome_personagem" required><br>
 
-        <label><strong>Nível:</strong></label>
-        <input type="number" name="nivel_personagem" required><br>
+            <label><strong>Classe:</strong></label>
+            <input type="text" name="classe_personagem" required><br>
 
-        <label><strong>Força:</strong></label>
-        <input type="number" name="força_personagem" required><br>
+            <label><strong>Nível:</strong></label>
+            <input type="number" name="nivel_personagem" required><br>
 
-        <label><strong>Inteligência:</strong></label>
-        <input type="number" name="inteligencia_personagem" required><br>
+            <label><strong>Força:</strong></label>
+            <input type="number" name="força_personagem" required><br>
 
-        <label><strong>Constituição:</strong></label>
-        <input type="number" name="constituicao_personagem" required><br>
+            <label><strong>Inteligência:</strong></label>
+            <input type="number" name="inteligencia_personagem" required><br>
 
-        <label><strong>Armadura:</strong></label>
-        <input type="number" name="armadura_personagem" required><br>
+            <label><strong>Constituição:</strong></label>
+            <input type="number" name="constituicao_personagem" required><br>
 
-        <h2>Ataques:</h2>
-        <ul id="lista-ataques"></ul>
+            <label><strong>Armadura:</strong></label>
+            <input type="number" name="armadura_personagem" required><br>
 
-        <button type="button" onclick="adicionarAtaque()">Adicionar Ataque</button><br>
+            <h2>Ataques:</h2>
+            <ul id="lista-ataques"></ul>
 
-        <button type="submit">Criar</button>
-    </form>
+            <button class="botao botao_mesa" type="button" onclick="adicionarAtaque()">Adicionar Ataque</button><br>
 
-    <a href="{{ url_for('mesa', mesa_id=mesa_id) }}">
-        <button>Voltar</button>
-    </a>
+            <button class="botao botao_mesa" type="submit">Criar</button>
+        </form>
 
+        <a href="{{ url_for('mesa', mesa_id=mesa_id) }}">
+            <button class="botao botao_mesa" >Voltar</button>
+        </a>
+    </section>
     <script>
         function adicionarAtaque() {
             let listaAtaques = document.getElementById("lista-ataques");

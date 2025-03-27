@@ -32,8 +32,7 @@ class Fichas(db.Model):
     ataques_personagem = db.Column(db.Text, nullable=False)
 
 with app.app_context():
-    db.create_all()  # Cria as tabelas, se necessário
-    # Verifique se já existe uma mesa com esse nome
+    db.create_all()  
     if not Mesas.query.filter_by(nome_mesa="ROOM INICIAL").first():
         mesas = Mesas(nome_mesa="ROOM INICIAL", fichas=json.dumps([
         {"id": 1, "nome": "Romulo"},
@@ -110,7 +109,7 @@ def home():
 def mesa(mesa_id):
 
     if request.method == 'POST':
-        new_mesa = Mesas(nome_mesa = request.form['nome_mesa'], fichas="{}")
+        new_mesa = Mesas(nome_mesa = request.form['nome_mesa'], fichas=json.dumps([]))
         db.session.add(new_mesa)
         db.session.commit()
         mesa_id = new_mesa.id
@@ -213,7 +212,6 @@ def ficha(ficha_id):
             db.session.commit()
             var = {"id": new_ficha.id, "nome": new_ficha.nome_personagem}
             fichas_lista = json.loads(mesa.fichas)
-            print(f"{var}")
             fichas_lista.append(var)
             mesa.fichas = json.dumps(fichas_lista)
 

@@ -3,22 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/css/stayle.css" rel="stylesheet" />
     <title>Cadastrar Ficha</title>
 </head>
 <body>
 
-    <h1>Cadastrar Ficha:</h1>
+    <section class = "book">
 
-    <form action="{{ url_for('mesa', mesa_id='new') }}" method="POST">
+        <h1>Cadastrar Ficha:</h1>
 
-        <label><strong>Room name:</strong></label>
-        <input type="text" name="nome_mesa" required><br>
+        <form action="{{ url_for('mesa', mesa_id='new') }}" method="POST">
 
-        <button type="submit">Criar</button>
-    </form>
+            <label><strong>Room name:</strong></label>
+            <input type="text" name="nome_mesa" required><br>
 
-    <a href="{{ url_for('home') }}">
-        <button>Voltar</button>
-    </a>
+            <button type="submit">Criar</button>
+        </form>
+
+        <a href="{{ url_for('home') }}">
+            <button class="botao botao_mesa" >Voltar</button>
+        </a>
+
+    </section>
+    
 </body>
 </html>

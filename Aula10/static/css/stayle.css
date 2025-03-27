@@ -1,17 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel&display=swap');
+
 * {
     padding: 0px;
     margin: 0px;
     box-sizing: border-box;
     list-style: none;
+    font-family: 'MedievalSharp', cursive;
 }
 
 body {
-    background-color: rgb(238, 208, 160);
-    padding: 30px;
+    background-color: #f0e6d2;
+    background-size: cover;
+    font-family: 'Cinzel', serif;
+    color: #3a2c1a;
+    margin: 0;
+    padding: 20px;
+    
 }
 
 .book {
-    background-color: antiquewhite;
+    background-color: rgb(255, 247, 237);
     border: 10px solid rgb(219, 167, 107);
     border-radius: 10px;
     padding: 20px;
@@ -41,7 +49,7 @@ body {
 }
 
 .mesas {
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     padding: 20px;
     border-radius: 10px;
     margin: 10px;
