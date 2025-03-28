@@ -18,11 +18,30 @@ body {
     
 }
 
+.dragon-icon {
+    width: 200px;
+    height: 200px;
+    background-image: url('../img/1.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+
 .book {
     background-color: rgb(255, 247, 237);
     border: 10px solid rgb(219, 167, 107);
     border-radius: 10px;
     padding: 20px;
+}
+
+.flexbook {
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+}
+
+.dado {
+    width: 50%;
 }
 
 .cabeçario {
